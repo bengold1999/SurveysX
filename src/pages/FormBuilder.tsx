@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PlusCircle, Save, Trash2, GripVertical } from 'lucide-react';
+import { PlusCircle, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -20,6 +20,7 @@ interface Question {
   type: QuestionType;
   options?: Option[];
   required: boolean;
+  numberValue?: string; // New field for number type questions
 }
 
 const FormBuilder: React.FC = () => {
@@ -37,6 +38,7 @@ const FormBuilder: React.FC = () => {
         options: (currentType === 'multiple-choice' || currentType === 'single-choice') 
           ? [{ id: '1', text: 'Option 1' }] 
           : undefined,
+        numberValue: currentType === 'number' ? '' : undefined,
       };
       setQuestions([...questions, newQuestion]);
       setCurrentQuestion('');
@@ -148,7 +150,13 @@ const FormBuilder: React.FC = () => {
             )}
 
             {question.type === 'number' && (
-              <Input type="number" placeholder="Number" className="mt-2" disabled />
+              <Input
+                type="number"
+                placeholder="Number"
+                className="mt-2"
+                value={question.numberValue}
+                onChange={(e) => updateQuestion(question.id, { numberValue: e.target.value })}
+              />
             )}
 
             {question.type === 'text' && (
