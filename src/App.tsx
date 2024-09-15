@@ -8,16 +8,16 @@ import FormBuilder from './pages/FormBuilder'
 
 
 function App() {
- 
+
 
   return (
     <>
-     <div>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/FormBuilder " element={<FormBuilder/>}/>
-      </Routes>
-     </div>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/FormBuilder" element={<FormBuilder />} />
+        </Routes>
+      </div>
     </>
   )
 }
