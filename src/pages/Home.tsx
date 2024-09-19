@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import HeaderHome from '@/components/HeaderHome'
 import CallToAction from '@/components/home/CallToAction'
+import WhatWeDo from '@/components/home/whatWeCan'
 // import HeaderHome from '@/components/HeaderHome'
 type Props = {}
 
@@ -14,6 +15,7 @@ const Home = (props: Props) => {
     {/* <a href="/FormBuilder">FormBuilder</a> */}
     <section className='w-full h-full '>
     <CallToAction></CallToAction>
+    <WhatWeDo></WhatWeDo>
     {/* <h1>sdsad</h1> */}
     </section>
     </main>

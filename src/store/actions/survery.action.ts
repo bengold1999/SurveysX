@@ -1,4 +1,4 @@
-import { surveyService } from '../services/survey.service'
+// import { surveyService } from '../services/survey.service'
 import { userService } from '../services/user.service'
 import { store } from '../store'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
@@ -14,7 +14,9 @@ import {
   SET_FILTER_BY
 } from './../reducers/surveyReducer'
 // import { SET_SCORE } from './user.reducer'
-import { LOADING_DONE, LOADING_START } from './system.reducer'
+
+// import { LOADING_DONE, LOADING_START } from './system.reducer'
+import { surveyService } from '@/services/survery.service'
 
 // Define interfaces for Survey and FilterBy if not already defined
 interface Survey {
@@ -26,7 +28,10 @@ interface FilterBy {
   // Define the structure of your filterBy object
   [key: string]: any
 }
-
+interface RemoveSurveyAction {
+  type: typeof REMOVE_SURVEY
+  surveyId: string
+}
 // Action Creators:
 export function getActionRemoveSurvey(surveyId: string) {
   return {
