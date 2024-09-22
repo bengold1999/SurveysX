@@ -4,7 +4,7 @@ type Props = {}
 
 const HeaderHome = (props: Props) => {
     return (
-        <header className=' sticky top-0 left-0 right-0 flex justify-between items-center shadow p-4  '>
+        <header className=' sticky top-0 left-0 right-0 flex justify-between items-center shadow p-4 bg-white '>
             <div>
                 <h2>Logo</h2>
             </div>

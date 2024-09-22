@@ -5,17 +5,19 @@ import ScrollCarousel from 'scroll-carousel-react';
 const Carousel = () => {
   return (
     <>
-      <h1>This is my component page</h1>
-      <p>Now i am showing my creation scroll carousel</p>
+    <div className='flex flex-col items-center pb-20 pt-20'>
+        <h1 className='text-3xl'>What We Can</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, nobis.</p>
+        </div>
       <ScrollCarousel
         autoplay
-        autoplaySpeed={8}
-        speed={7}
+        autoplaySpeed={2}
+        speed={1}
         onReady={() => console.log('I am ready')}
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
+        {[1, 2, 3, 4, 5, 6].map((item) => (
           <div key={item} className='bg-blue-300/20 border-2 border-blue-300/70 rounded h-36 w-48'>
-            {item}
+            
           </div>
         ))}
       </ScrollCarousel>
