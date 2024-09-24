@@ -2,7 +2,7 @@ import React from 'react';
 
 const Login: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Left Section */}
         <div className="hidden md:flex w-full md:w-1/2 bg-gray-100 p-8">
