@@ -11,7 +11,7 @@ const CallToAction = (props: Props) => {
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, culpa.</p>
         <button className='w-1/4'>Start Now</button>
       </div>
-      <img className='w-1/2 pr-10' src="https://picsum.photos/200" alt="sds" />
+      <img className='w-1/3 pr-10' src="src\assets\img\Information tab-pana 1.png" alt="sds" />
     </article>
   )
 }
