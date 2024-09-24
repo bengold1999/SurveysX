@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const HeaderHome = (props: Props) => {
+    const nav = useNavigate()
     return (
         <header className=' sticky top-0 left-0 right-0 flex justify-between items-center shadow-sm p-4 bg-white '>
             <div className='flex items-center'>
@@ -14,7 +16,7 @@ const HeaderHome = (props: Props) => {
                 <span>Surverys</span>
                 <span>Pricing</span>
                 <span>How It Works</span>
-                <button>Start Now </button>
+                <button onClick={() => nav('/Login')}>Start Now </button>
             </nav>
 
         </header>
