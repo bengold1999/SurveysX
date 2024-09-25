@@ -10,13 +10,16 @@ const Carousel = () => {
       </div>
       <ScrollCarousel
         autoplay
-        autoplaySpeed={2}
-        speed={2}
+        autoplaySpeed={1.5}  
+        speed={1.5}         
         onReady={() => console.log('I am ready')}
       >
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-          <div key={item} className="border-1 shadow-xl rounded h-36 w-48 md:w-48">
-            {item}
+          <div
+            key={item}
+            className="border-1 shadow-xl rounded h-72 w-80 md:h-96 md:w-96 m-2 bg-white flex items-center justify-center text-2xl"
+          >
+            Card {item}
           </div>
         ))}
       </ScrollCarousel>
