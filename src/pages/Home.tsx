@@ -12,8 +12,8 @@ type Props = {};
 const Home = (props: Props) => {
   return (
     <>
-      <main className="flex flex-col w-full h-full">
         <HeaderHome />
+      <main className="flex flex-col w-full h-full">
         <section className="w-full h-full">
           <CallToAction />
           <Carousel />
