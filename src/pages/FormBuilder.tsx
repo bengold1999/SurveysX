@@ -44,7 +44,7 @@ const FormBuilder: React.FC = () => {
   return (
     <>
       <Header/>
-    <div className="bg-gray-100 min-h-screen p-4">
+    <div className="bg-bgTrue min-h-screen p-4">
       <div className="max-w-3xl mx-auto space-y-4">
         {questions.map((question) => (
           <div key={question.id} className="bg-white p-6 rounded-lg shadow">

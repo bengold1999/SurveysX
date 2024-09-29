@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import FormBuilder from './pages/FormBuilder'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import SurveyDashboard from './pages/SurveryDashBoard'
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/FormBuilder" element={<FormBuilder />} />
+          <Route path="/FormBuilder/:id" element={<FormBuilder />} />
+          <Route path="/SurveyDashBoard" element={<SurveyDashboard />} />
         </Routes>
       </div>
     </>
