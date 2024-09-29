@@ -1,49 +1,27 @@
+import Header from '@/components/header';
+import HeaderHome from '@/components/HeaderHome';
 import React, { useState } from 'react';
-import { PlusCircle, Save, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 
 type QuestionType = 'text' | 'number' | 'multiple-choice' | 'single-choice';
-
-interface Option {
-  id: string;
-  text: string;
-}
 
 interface Question {
   id: string;
   text: string;
   type: QuestionType;
-  options?: Option[];
-  required: boolean;
-  numberValue?: string; // New field for number type questions
+  options?: string[];
 }
 
 const FormBuilder: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentQuestion, setCurrentQuestion] = useState<string>('');
-  const [currentType, setCurrentType] = useState<QuestionType>('text');
 
-  const addQuestion = () => {
-    if (currentQuestion.trim() !== '') {
-      const newQuestion: Question = {
-        id: Date.now().toString(),
-        text: currentQuestion,
-        type: currentType,
-        required: false,
-        options: (currentType === 'multiple-choice' || currentType === 'single-choice') 
-          ? [{ id: '1', text: 'Option 1' }] 
-          : undefined,
-        numberValue: currentType === 'number' ? '' : undefined,
-      };
-      setQuestions([...questions, newQuestion]);
-      setCurrentQuestion('');
-      setCurrentType('text');
-    }
+  const addQuestion = (type: QuestionType) => {
+    const newQuestion: Question = {
+      id: Date.now().toString(),
+      text: '',
+      type: type,
+      options: type === 'multiple-choice' || type === 'single-choice' ? ['Option 1'] : undefined,
+    };
+    setQuestions([...questions, newQuestion]);
   };
 
   const updateQuestion = (id: string, updates: Partial<Question>) => {
@@ -53,26 +31,7 @@ const FormBuilder: React.FC = () => {
   const addOption = (questionId: string) => {
     setQuestions(questions.map(q => {
       if (q.id === questionId && q.options) {
-        const newOptionId = (q.options.length + 1).toString();
-        return { ...q, options: [...q.options, { id: newOptionId, text: `Option ${newOptionId}` }] };
-      }
-      return q;
-    }));
-  };
-
-  const updateOption = (questionId: string, optionId: string, newText: string) => {
-    setQuestions(questions.map(q => {
-      if (q.id === questionId && q.options) {
-        return { ...q, options: q.options.map(o => o.id === optionId ? { ...o, text: newText } : o) };
-      }
-      return q;
-    }));
-  };
-
-  const removeOption = (questionId: string, optionId: string) => {
-    setQuestions(questions.map(q => {
-      if (q.id === questionId && q.options && q.options.length > 1) {
-        return { ...q, options: q.options.filter(o => o.id !== optionId) };
+        return { ...q, options: [...q.options, `Option ${q.options.length + 1}`] };
       }
       return q;
     }));
@@ -83,137 +42,81 @@ const FormBuilder: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Form Builder</h1>
-      
-      <div className="space-y-6">
+    <>
+      <Header/>
+    <div className="bg-gray-100 min-h-screen p-4">
+      <div className="max-w-3xl mx-auto space-y-4">
         {questions.map((question) => (
-          <div key={question.id} className="p-6 border rounded-lg shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <Input
-                value={question.text}
-                onChange={(e) => updateQuestion(question.id, { text: e.target.value })}
-                className="text-lg font-semibold bg-transparent border-none shadow-none"
-                placeholder="Question"
-              />
-              <Select
-                value={question.type}
-                onValueChange={(value: QuestionType) => updateQuestion(question.id, { type: value })}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Question type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="text">Short answer</SelectItem>
-                  <SelectItem value="number">Number</SelectItem>
-                  <SelectItem value="multiple-choice">Multiple choice</SelectItem>
-                  <SelectItem value="single-choice">Single choice</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
+          <div key={question.id} className="bg-white p-6 rounded-lg shadow">
+            <input
+              type="text"
+              value={question.text}
+              onChange={(e) => updateQuestion(question.id, { text: e.target.value })}
+              placeholder="Question"
+              className="w-full text-lg font-semibold mb-4 p-2 border-b border-gray-200 focus:outline-none focus:border-blue-500"
+            />
+            {question.type === 'text' && (
+              <input type="text" placeholder="Short answer text" disabled className="w-full p-2 border border-gray-300 rounded" />
+            )}
+            {question.type === 'number' && (
+              <input type="number" placeholder="Number" disabled className="w-full p-2 border border-gray-300 rounded" />
+            )}
             {(question.type === 'multiple-choice' || question.type === 'single-choice') && question.options && (
-              <div className="space-y-2 ml-6">
+              <div className="space-y-2">
                 {question.options.map((option, index) => (
-                  <div key={option.id} className="flex items-center space-x-2">
-                    {question.type === 'multiple-choice' ? (
-                      <Checkbox disabled />
-                    ) : (
-                      <RadioGroup>
-                        <RadioGroupItem value={option.id} id={`${question.id}-${option.id}`} disabled />
-                      </RadioGroup>
-                    )}
-                    <Input
-                      value={option.text}
-                      onChange={(e) => updateOption(question.id, option.id, e.target.value)}
-                      className="flex-grow"
-                      placeholder={`Option ${index + 1}`}
+                  <div key={index} className="flex items-center space-x-2">
+                    <input
+                      type={question.type === 'multiple-choice' ? 'checkbox' : 'radio'}
+                      disabled
+                      className="form-checkbox h-5 w-5 text-blue-600"
                     />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeOption(question.id, option.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <input
+                      type="text"
+                      value={option}
+                      onChange={(e) => updateQuestion(question.id, { options: question.options?.map((opt, i) => i === index ? e.target.value : opt) })}
+                      className="flex-grow p-2 border border-gray-300 rounded"
+                    />
                   </div>
                 ))}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addOption(question.id)}
-                  className="mt-2"
-                >
-                  Add option
-                </Button>
+                <button onClick={() => addOption(question.id)} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                  Add Option
+                </button>
               </div>
             )}
-
-            {question.type === 'number' && (
-              <Input
-                type="number"
-                placeholder="Number"
-                className="mt-2"
-                value={question.numberValue}
-                onChange={(e) => updateQuestion(question.id, { numberValue: e.target.value })}
-              />
-            )}
-
-            {question.type === 'text' && (
-              <Input type="text" placeholder="Short answer" className="mt-2" disabled />
-            )}
-
-            <div className="flex items-center justify-between mt-4">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={`required-${question.id}`}
-                  checked={question.required}
-                  onCheckedChange={(checked) => updateQuestion(question.id, { required: checked as boolean })}
-                />
-                <Label htmlFor={`required-${question.id}`}>Required</Label>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => removeQuestion(question.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            <button onClick={() => removeQuestion(question.id)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+              Remove Question
+            </button>
           </div>
         ))}
       </div>
-      
-      <div className="mt-6 space-y-4">
-        <Input
-          type="text"
-          value={currentQuestion}
-          onChange={(e) => setCurrentQuestion(e.target.value)}
-          placeholder="Enter your question"
-          className="w-full"
-        />
-        
-        <Select value={currentType} onValueChange={(value: QuestionType) => setCurrentType(value)}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select question type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="text">Short answer</SelectItem>
-            <SelectItem value="number">Number</SelectItem>
-            <SelectItem value="multiple-choice">Multiple choice</SelectItem>
-            <SelectItem value="single-choice">Single choice</SelectItem>
-          </SelectContent>
-        </Select>
-        
-        <Button onClick={addQuestion} className="w-full">
-          <PlusCircle className="mr-2 h-4 w-4" /> Add Question
-        </Button>
-        
-        <Button variant="outline" className="w-full">
-          <Save className="mr-2 h-4 w-4" /> Save Form
-        </Button>
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-lg shadow space-y-2">
+        <button onClick={() => addQuestion('text')} className="w-full flex items-center justify-center p-2 bg-gray-200 rounded hover:bg-gray-300">
+          <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          Text
+        </button>
+        <button onClick={() => addQuestion('number')} className="w-full flex items-center justify-center p-2 bg-gray-200 rounded hover:bg-gray-300">
+          <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+          </svg>
+          Number
+        </button>
+        <button onClick={() => addQuestion('multiple-choice')} className="w-full flex items-center justify-center p-2 bg-gray-200 rounded hover:bg-gray-300">
+          <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+          Multiple Choice
+        </button>
+        <button onClick={() => addQuestion('single-choice')} className="w-full flex items-center justify-center p-2 bg-gray-200 rounded hover:bg-gray-300">
+          <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Single Choice
+        </button>
       </div>
     </div>
+    </>
   );
 };
 
