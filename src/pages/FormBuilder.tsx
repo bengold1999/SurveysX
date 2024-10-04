@@ -1,6 +1,6 @@
 import Header from '@/components/header';
-import HeaderHome from '@/components/HeaderHome';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 type QuestionType = 'text' | 'number' | 'multiple-choice' | 'single-choice';
 
@@ -11,8 +11,20 @@ interface Question {
   options?: string[];
 }
 
-const FormBuilder: React.FC = () => {
+// FormBuilder Component
+const FormBuilder: React.FC<{ surveysData: any[] }> = ({ surveysData }) => {
+  const { surveyId } = useParams<{ surveyId: string }>(); // קבלת ה-id מה-URL
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  // טוען את השאלות אם קיים id של סקר
+  useEffect(() => {
+    if (surveyId) {
+      const survey = surveysData.find(s => s.id === Number(surveyId));
+      if (survey) {
+        setQuestions(survey.questions); // טען את השאלות לעריכה
+      }
+    }
+  }, [surveyId, surveysData]);
 
   const addQuestion = (type: QuestionType) => {
     const newQuestion: Question = {
@@ -25,7 +37,7 @@ const FormBuilder: React.FC = () => {
   };
 
   const updateQuestion = (id: string, updates: Partial<Question>) => {
-    setQuestions(questions.map(q => q.id === id ? { ...q, ...updates } : q));
+    setQuestions(questions.map(q => (q.id === id ? { ...q, ...updates } : q)));
   };
 
   const addOption = (questionId: string) => {
@@ -43,51 +55,55 @@ const FormBuilder: React.FC = () => {
 
   return (
     <>
-      <Header/>
+    <Header/>
     <div className="bg-bgTrue min-h-screen p-4">
       <div className="max-w-3xl mx-auto space-y-4">
-        {questions.map((question) => (
-          <div key={question.id} className="bg-white p-6 rounded-lg shadow">
-            <input
-              type="text"
-              value={question.text}
-              onChange={(e) => updateQuestion(question.id, { text: e.target.value })}
-              placeholder="Question"
-              className="w-full text-lg font-semibold mb-4 p-2 border-b border-gray-200 focus:outline-none focus:border-blue-500"
-            />
-            {question.type === 'text' && (
-              <input type="text" placeholder="Short answer text" disabled className="w-full p-2 border border-gray-300 rounded" />
-            )}
-            {question.type === 'number' && (
-              <input type="number" placeholder="Number" disabled className="w-full p-2 border border-gray-300 rounded" />
-            )}
-            {(question.type === 'multiple-choice' || question.type === 'single-choice') && question.options && (
-              <div className="space-y-2">
-                {question.options.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <input
-                      type={question.type === 'multiple-choice' ? 'checkbox' : 'radio'}
-                      disabled
-                      className="form-checkbox h-5 w-5 text-blue-600"
-                    />
-                    <input
-                      type="text"
-                      value={option}
-                      onChange={(e) => updateQuestion(question.id, { options: question.options?.map((opt, i) => i === index ? e.target.value : opt) })}
-                      className="flex-grow p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                ))}
-                <button onClick={() => addOption(question.id)} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                  Add Option
-                </button>
-              </div>
-            )}
-            <button onClick={() => removeQuestion(question.id)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-              Remove Question
-            </button>
-          </div>
-        ))}
+        {questions.length > 0 ? (
+          questions.map((question) => (
+            <div key={question.id} className="bg-white p-6 rounded-lg shadow">
+              <input
+                type="text"
+                value={question.text}
+                onChange={(e) => updateQuestion(question.id, { text: e.target.value })}
+                placeholder="Question"
+                className="w-full text-lg font-semibold mb-4 p-2 border-b border-gray-200 focus:outline-none focus:border-blue-500"
+                />
+              {question.type === 'text' && (
+                <input type="text" placeholder="Short answer text" disabled className="w-full p-2 border border-gray-300 rounded" />
+              )}
+              {question.type === 'number' && (
+                <input type="number" placeholder="Number" disabled className="w-full p-2 border border-gray-300 rounded" />
+              )}
+              {(question.type === 'multiple-choice' || question.type === 'single-choice') && question.options && (
+                <div className="space-y-2">
+                  {question.options.map((option, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <input
+                        type={question.type === 'multiple-choice' ? 'checkbox' : 'radio'}
+                        disabled
+                        className="form-checkbox h-5 w-5 text-blue-600"
+                        />
+                      <input
+                        type="text"
+                        value={option}
+                        onChange={(e) => updateQuestion(question.id, { options: question.options?.map((opt, i) => i === index ? e.target.value : opt) })}
+                        className="flex-grow p-2 border border-gray-300 rounded"
+                        />
+                    </div>
+                  ))}
+                  <button onClick={() => addOption(question.id)} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Add Option
+                  </button>
+                </div>
+              )}
+              <button onClick={() => removeQuestion(question.id)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                Remove Question
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No questions yet. Add some!</p>
+        )}
       </div>
       <div className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-lg shadow space-y-2">
         <button onClick={() => addQuestion('text')} className="w-full flex items-center justify-center p-2 bg-gray-200 rounded hover:bg-gray-300">
@@ -116,7 +132,7 @@ const FormBuilder: React.FC = () => {
         </button>
       </div>
     </div>
-    </>
+        </>
   );
 };
 

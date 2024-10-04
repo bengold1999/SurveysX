@@ -5,12 +5,15 @@ const SignUp: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Left Section */}
-        <div className="hidden md:flex w-full md:w-1/2 bg-gray-100 p-8">
+        <div className="hidden md:flex w-full md:w-1/2 bg-gray-100 p-8 items-start ">
+        <div className='flex items-center'>
           <img
-            src="your-left-image.png"
+            src="/../src/assets/img/Logox.png" 
             alt="Left section illustration"
-            className="object-cover w-full"
+            className="w-10 h-10"
           />
+          <h2 className='ml-2 text-xl font-lightbold'>SurveyX</h2>
+          </div>
         </div>
 
         {/* Right Section */}
