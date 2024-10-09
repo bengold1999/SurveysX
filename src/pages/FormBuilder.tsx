@@ -1,4 +1,5 @@
 import Header from '@/components/header';
+import { loadSurveys } from '@/store/actions/survery.action';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -13,12 +14,12 @@ interface Question {
 
 // FormBuilder Component
 const FormBuilder: React.FC<{ surveysData: any[] }> = ({ surveysData }) => {
-  // const surveysData
   const { surveyId } = useParams<{ surveyId: string }>(); // קבלת ה-id מה-URL
   const [questions, setQuestions] = useState<Question[]>([]);
 
   // טוען את השאלות אם קיים id של סקר
   useEffect(() => {
+    const surveysData = loadSurveys();
     if (surveyId) {
       const survey = surveysData.find(s => s.id === Number(surveyId));
       if (survey) {
