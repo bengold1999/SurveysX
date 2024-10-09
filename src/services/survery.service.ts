@@ -3,7 +3,7 @@ import { Survey } from "@/lib/types";
 const STORAGE_KEY = "surveys";
 const Surveys = [
   {
-    id: 1,
+    _id: "1",
     userId: "dummyUserId",
     title: "Product Survey",
     date: "2024-08-27",
@@ -14,7 +14,7 @@ const Surveys = [
     ],
   },
   {
-    id: 2,
+    _id: "2",
     userId: "dummyUserId",
     title: "Medical Questionnaire",
     date: "2024-09-13",

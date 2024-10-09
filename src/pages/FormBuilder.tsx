@@ -13,6 +13,7 @@ interface Question {
 
 // FormBuilder Component
 const FormBuilder: React.FC<{ surveysData: any[] }> = ({ surveysData }) => {
+  // const surveysData
   const { surveyId } = useParams<{ surveyId: string }>(); // קבלת ה-id מה-URL
   const [questions, setQuestions] = useState<Question[]>([]);
 

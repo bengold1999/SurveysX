@@ -43,11 +43,11 @@ const HeaderHome = (props: Props) => {
       </div>
 
       {/* Navigation for larger screens */}
-      <nav className="hidden md:flex space-x-4 items-center">
-        <HashLink smooth to="#surveys" className="text-secondery">Surveys</HashLink>
-        <HashLink smooth to="#pricing" className="text-secondery">Pricing</HashLink>
-        <HashLink smooth to="#howitworks" className="text-secondery">How It Works</HashLink>
-        <HashLink smooth to="#contact" className="text-secondery">Contact</HashLink>
+      <nav className="hidden md:flex space-x-4 items-center ">
+        <HashLink smooth to="#surveys" className="text-secondery hover:shadow">Surveys</HashLink>
+        <HashLink smooth to="#pricing" className="text-secondery hover:shadow">Pricing</HashLink>
+        <HashLink smooth to="#howitworks" className="text-secondery hover:shadow">How It Works</HashLink>
+        <HashLink smooth to="#contact" className="text-secondery hover:shadow-xl">Contact</HashLink>
         <button onClick={() => nav('/Login')}>Start Now</button>
       </nav>
 
