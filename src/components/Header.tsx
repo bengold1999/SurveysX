@@ -14,7 +14,7 @@ const Header = (props: Props) => {
 
   return (
     <header className="sticky top-0 left-0 right-0 flex justify-between items-center shadow-sm p-4 bg-white z-10">
-      <div className="flex items-center">
+      <div className="flex items-center hover:cursor-pointer " onClick={() => nav('/')}>
         <img className="w-10" src="src/assets/img/logoX.png" alt="Logo" />
         <h2 className="ml-2 text-xl font-lightbold">SurveyX</h2>
       </div>

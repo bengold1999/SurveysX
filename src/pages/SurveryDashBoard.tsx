@@ -1,29 +1,23 @@
 import Header from '@/components/header';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { surveyService } from '@/services/survery.service';
+import { useSelector } from 'react-redux'; // Import useSelector to get data from the Redux store
+import {store} from '../store/store';
 
 const SurveyDashboard: React.FC = () => {
-  const [surveys, setSurveys] = useState([]);
   const [filterText, setFilterText] = useState('');
   const [sortOption, setSortOption] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Fetch surveys for the specific user (assuming a dummy user)
-    async function loadSurveys() {
-      const userSurveys = await surveyService.query({ userId: 'dummyUserId' });
-      setSurveys(userSurveys);
-    }
-    loadSurveys();
-  }, []);
+  
+  // Get surveys from Redux store
+  const SurveysFromStore = useSelector((store) => store.surveyModule.surveys); // Fetch surveys from the store
 
   const handleSurveyClick = (surveyId: string) => {
     navigate(`/FormBuilder/${surveyId}`);
   };
 
   // Filter and Sort Surveys
-  const filteredSurveys = surveys
+  const filteredSurveys = SurveysFromStore
     .filter((survey) => 
       survey.title.toLowerCase().includes(filterText.toLowerCase())
     )
