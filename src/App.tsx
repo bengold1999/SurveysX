@@ -21,7 +21,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/FormBuilder" element={<FormBuilder />} />
-          <Route path="/FormBuilder/:id" element={<FormBuilder />} />
+          <Route path="/FormBuilder/:surveyId" element={<FormBuilder />} />
           <Route path="/SurveyDashBoard" element={<SurveyDashboard />} />
         </Routes>
       </div>

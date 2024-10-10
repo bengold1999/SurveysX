@@ -51,7 +51,7 @@ function query(filterBy: FilterBy = {}) {
 
 function getById(surveyId: string) {
   const surveys = _loadFromStorage();
-  return surveys.find((survey) => survey._id === surveyId) || null;
+return surveys.find((survey: Survey) => survey._id === surveyId);
 }
 
 function remove(surveyId: string) {

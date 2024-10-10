@@ -11,7 +11,8 @@ import {
   SET_SURVEYS,
   UNDO_REMOVE_SURVEY,
   UPDATE_SURVEY,
-  SET_FILTER_BY
+  SET_FILTER_BY,
+  SET_SURVEY
 } from './../reducers/surveyReducer'
 // import { SET_SCORE } from './user.reducer'
 
@@ -54,10 +55,35 @@ export function getActionUpdateSurvey(survey: Survey) {
   }
 }
 
+export function loadSurvey(surveyId: string) {
+  // Indicate that loading has started
+  // store.dispatch({ type: LOADING_START, isLoading: true });
+  // console.log("From loadSurvey function:", surveyId);
+
+  try {
+    const survey = surveyService.getById(surveyId);
+    // console.log("From loadSurvey function:", survey); // No need for await here since localStorage is synchronous
+    // Ensure survey is properly logged
+
+    // Dispatch the loaded survey to Redux
+    store.dispatch({
+      type: SET_SURVEY,
+      survey,
+    });
+  } catch (err) {
+    console.error('Cannot load survey:', err); // Log any errors during the load process
+    throw err;
+  } finally {
+    // Indicate that loading has finished
+    // store.dispatch({ type: LOADING_DONE, isLoading: false });
+  }
+
+}
+
 export function loadSurveys(filterBy: FilterBy = {}) {
   // Indicate that loading has started
   // store.dispatch({ type: LOADING_START, isLoading: true });
-  
+
   try {
     const surveys = surveyService.query(filterBy); // No need for await here since localStorage is synchronous
     console.log('Loaded surveys:', surveys); // Ensure surveys are properly logged

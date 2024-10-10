@@ -1,6 +1,7 @@
 import Header from '@/components/header';
-import { loadSurveys } from '@/store/actions/survery.action';
+import { loadSurvey, loadSurveys } from '@/store/actions/survery.action';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 type QuestionType = 'text' | 'number' | 'multiple-choice' | 'single-choice';
@@ -13,20 +14,18 @@ interface Question {
 }
 
 // FormBuilder Component
-const FormBuilder: React.FC<{ surveysData: any[] }> = ({ surveysData }) => {
-  const { surveyId } = useParams<{ surveyId: string }>(); // קבלת ה-id מה-URL
+const FormBuilder: React.FC<{ surveysData: any[] }> = () => {
+  const { surveyId } = useParams<{ surveyId: string }>();
   const [questions, setQuestions] = useState<Question[]>([]);
-
+  const survey = useSelector((state: any) => state.surveyModule.survey);
   // טוען את השאלות אם קיים id של סקר
+  console.log('survey', survey);
   useEffect(() => {
-    const surveysData = loadSurveys();
-    if (surveyId) {
-      const survey = surveysData.find(s => s.id === Number(surveyId));
-      if (survey) {
-        setQuestions(survey.questions); // טען את השאלות לעריכה
-      }
-    }
-  }, [surveyId, surveysData]);
+    
+       loadSurvey(surveyId);
+        setQuestions(survey.questions);
+    
+  },[surveyId]);
 
   const addQuestion = (type: QuestionType) => {
     const newQuestion: Question = {

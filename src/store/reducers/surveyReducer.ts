@@ -9,6 +9,7 @@ export const CLEAR_CART = 'CLEAR_CART'
 export const UNDO_REMOVE_SURVEY = 'UNDO_REMOVE_SURVEY'
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
+export const SET_SURVEY = 'SET_SURVEY'
 
 interface Survey {
     _id: string;
@@ -22,14 +23,13 @@ interface FilterBy {
 
 interface SurveyState {
     surveys: Survey[];
-    lastRemovedSurvey: Survey | null;
-    filterBy: FilterBy;
-    cart: Survey[];
+    survey: Survey | null;
 }
 
 const searchParams = new URLSearchParams(window.location.search)
 const initialState: SurveyState = {
     surveys: [],
+    survey: null,
     // lastRemovedSurvey: null,
     // filterBy: surveyService.getFilterFromParams(searchParams),
     // cart: []
@@ -38,6 +38,11 @@ const initialState: SurveyState = {
 interface SetSurveysAction {
     type: typeof SET_SURVEYS;
     surveys: Survey[];
+}
+
+interface SetSurveyAction {
+    type: typeof SET_SURVEY;
+    survey: Survey;
 }
 
 interface RemoveSurveyAction {
@@ -87,7 +92,8 @@ type SurveyAction =
     | RemoveFromCartAction
     | ClearCartAction
     | UndoRemoveSurveyAction
-    | SetFilterByAction;
+    | SetFilterByAction
+    | SetSurveyAction
 
 export function surveyReducer(state: SurveyState = initialState, action: SurveyAction): SurveyState {
     let surveys: Survey[];
@@ -95,6 +101,9 @@ export function surveyReducer(state: SurveyState = initialState, action: SurveyA
     switch (action.type) {
         case SET_SURVEYS:
             return { ...state, surveys: action.surveys }
+
+        case SET_SURVEY:
+            return { ...state, survey: action.survey }
 
         case REMOVE_SURVEY: {
             const lastRemovedSurvey = state.surveys.find(survey => survey._id === action.surveyId) || null;
