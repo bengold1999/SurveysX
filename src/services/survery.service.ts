@@ -25,7 +25,6 @@ const Surveys = [
     ],
   },
 ];
-
 export const surveyService = {
   query,
   getById,
@@ -33,14 +32,10 @@ export const surveyService = {
   save,
 };
 
-interface FilterBy {
-  [key: string]: any;
-}
-
-async function query(filterBy: FilterBy = {}) {
+function query(filterBy: FilterBy = {}) {
   const surveys = _loadFromStorage();
-  if (!surveys) return [];
-
+  console.log("From query function:", surveys); // Ensure surveys are being loaded
+  
   // Apply user-specific filter
   let filteredSurveys = surveys;
   if (filterBy.userId) {
@@ -51,21 +46,21 @@ async function query(filterBy: FilterBy = {}) {
     filteredSurveys = filteredSurveys.filter((survey) => survey.title.includes(filterBy.title));
   }
 
-  return filteredSurveys;
+  return filteredSurveys; // Ensure this function returns the filtered results
 }
 
-async function getById(surveyId: string) {
+function getById(surveyId: string) {
   const surveys = _loadFromStorage();
   return surveys.find((survey) => survey._id === surveyId) || null;
 }
 
-async function remove(surveyId: string) {
+function remove(surveyId: string) {
   let surveys = _loadFromStorage();
   surveys = surveys.filter((survey: Survey) => survey._id !== surveyId);
   _saveToStorage(surveys);
 }
 
-async function save(survey: Survey) {
+function save(survey: Survey) {
   const surveys = _loadFromStorage() || [];
 
   if (survey._id) {
@@ -82,8 +77,10 @@ async function save(survey: Survey) {
   return survey;
 }
 
+// Load and save functions remain the same
 function _loadFromStorage() {
   if (!localStorage.getItem(STORAGE_KEY)) _saveToStorage(Surveys);
+  
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 }
 

@@ -54,20 +54,25 @@ export function getActionUpdateSurvey(survey: Survey) {
   }
 }
 
-export async function loadSurveys(filterBy: FilterBy) {
-  // const filterBy = store.getState().surveyModule.filterBy
-  store.dispatch({ type: LOADING_START, isLoading: true })
+export function loadSurveys(filterBy: FilterBy = {}) {
+  // Indicate that loading has started
+  // store.dispatch({ type: LOADING_START, isLoading: true });
+  
   try {
-    const surveys = await surveyService.query(filterBy)
+    const surveys = surveyService.query(filterBy); // No need for await here since localStorage is synchronous
+    console.log('Loaded surveys:', surveys); // Ensure surveys are properly logged
+
+    // Dispatch the loaded surveys to Redux
     store.dispatch({
       type: SET_SURVEYS,
       surveys,
-    })
+    });
   } catch (err) {
-    console.error('Cannot load surveys', err)
-    throw err
+    console.error('Cannot load surveys:', err); // Log any errors during the load process
+    throw err;
   } finally {
-    store.dispatch({ type: LOADING_DONE, isLoading: false })
+    // Indicate that loading has finished
+    // store.dispatch({ type: LOADING_DONE, isLoading: false });
   }
 }
 

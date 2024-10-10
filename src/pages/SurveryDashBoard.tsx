@@ -2,23 +2,38 @@ import Header from '@/components/header';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'; // Import useSelector to get data from the Redux store
-import {store} from '../store/store';
+import { store } from '../store/store';
+import { loadSurveys } from '@/store/actions/survery.action';
 
 const SurveyDashboard: React.FC = () => {
   const [filterText, setFilterText] = useState('');
   const [sortOption, setSortOption] = useState('');
   const navigate = useNavigate();
-  
+
   // Get surveys from Redux store
   const SurveysFromStore = useSelector((store) => store.surveyModule.surveys); // Fetch surveys from the store
 
+  useEffect(() => {
+    // async function _loadSurveys() {
+    //   try {
+    //      loadSurveys();
+    //     console.log('Surveys loaded successfully');
+    //   } catch (err) {
+    //     console.error('Failed to load surveys:', err);
+    //   }
+    // }
+    // _loadSurveys();
+    loadSurveys();
+  }, []);
+
+  console.log('Surveys from Redux store:', SurveysFromStore);
   const handleSurveyClick = (surveyId: string) => {
     navigate(`/FormBuilder/${surveyId}`);
   };
 
   // Filter and Sort Surveys
   const filteredSurveys = SurveysFromStore
-    .filter((survey) => 
+    .filter((survey) =>
       survey.title.toLowerCase().includes(filterText.toLowerCase())
     )
     .sort((a, b) => {
@@ -35,19 +50,19 @@ const SurveyDashboard: React.FC = () => {
       <Header />
       <article className="p-4 flex flex-col items-center gap-4">
         <h1>Survey Dashboard</h1>
-        
+
         <div className="flex gap-2 p-2">
           {/* Filter by Title */}
-          <input 
-            type="text" 
-            placeholder="Filter by title..." 
+          <input
+            type="text"
+            placeholder="Filter by title..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
             className="border rounded p-2"
           />
 
           {/* Sort by Title or Date */}
-          <select 
+          <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
             className="border rounded p-2"
